@@ -69,4 +69,19 @@ class ProductoRepositoryPostgres(ProductoRepository):
         if producto_db is not None:
             self.session.delete(producto_db)
             self.session.commit()
+
+    def buscar_por_codigo_barras(self, codigo_barras : str) -> Producto | None:
+        modelo = self.session.query(ProductoModel).filter(ProductoModel.codigo_barras == codigo_barras).first()
+        if not modelo:
+            return None
+        return Producto(
+            id_producto=modelo.id_producto,
+            codigo_barras=modelo.codigo_barras,
+            nombre=modelo.nombre,
+            marca=modelo.marca,
+            presentacion=modelo.presentacion,
+            precio_venta=modelo.precio_venta,
+            estado=modelo.estado,
+            id_categoria=modelo.id_categoria
+        )
     
