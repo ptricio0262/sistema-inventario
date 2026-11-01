@@ -15,4 +15,3 @@ def get_producto_service(db_session : Session = Depends(get_db)) -> ProductoServ
     repositorio = ProductoRepositoryPostgres(session=db_session)
     servicio = ProductoService(repositorio=repositorio)
     return servicio
-
