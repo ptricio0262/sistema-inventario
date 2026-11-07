@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from app.presentation.routes import producto_routes, categoria_routes
+from app.presentation.routes import producto_routes, categoria_routes, inventario_routes
 
 app = FastAPI(
     title = "Sistema de Inventario",
@@ -8,6 +8,7 @@ app = FastAPI(
 
 app.include_router(producto_routes.router)
 app.include_router(categoria_routes.router)
+app.include_router(inventario_routes.router)
 
 @app.get("/")
 def inicio():
