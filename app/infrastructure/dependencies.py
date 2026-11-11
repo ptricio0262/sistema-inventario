@@ -1,6 +1,9 @@
 from fastapi import Depends
 from sqlalchemy.orm import Session
 from app.infrastructure.database import SessionLocal
+from fastapi import Depends
+from sqlalchemy.orm import Session
+from app.infrastructure.database import SessionLocal
 from app.infrastructure.repositories.producto_repository import ProductoRepositoryPostgres
 from app.application.services.producto_service import ProductoService
 from app.infrastructure.repositories.categoria_repository import CategoriaRepositoryPostgres
@@ -17,7 +20,9 @@ def get_db():
 
 def get_producto_service(db_session : Session = Depends(get_db)) -> ProductoService:
     repositorio = ProductoRepositoryPostgres(session=db_session)
-    servicio = ProductoService(repositorio=repositorio)
+    inventario_repo = InventarioRepositoryPostgres(session=db_session) 
+    
+    servicio = ProductoService(repositorio=repositorio, inventario_repo=inventario_repo)
     return servicio
 
 def get_categoria_service(db_session : Session = Depends(get_db)) -> CategoriaService:

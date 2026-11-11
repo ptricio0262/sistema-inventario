@@ -1,9 +1,12 @@
 from app.domain.repositories.producto_repository import ProductoRepository
 from app.domain.entities.producto import Producto
+from app.domain.repositories.inventario_repository import InventarioRepository
+from app.domain.entities.inventario import Inventario
 
 class ProductoService:
-    def __init__(self, repositorio : ProductoRepository):
+    def __init__(self, repositorio : ProductoRepository, inventario_repo : InventarioRepository):
         self.repositorio = repositorio
+        self.inventario_repo = inventario_repo
 
     def obtener_todos(self) -> list[Producto]:
         return self.repositorio.listar_todos()
@@ -18,6 +21,8 @@ class ProductoService:
         if producto.precio_venta <= 0:
             raise ValueError(f"El precio de venta debe ser mayor a 0.")
         self.repositorio.guardar_producto(producto)
+        nuevo_inventario = Inventario(id_producto=producto.id_producto, cantidad=0, stock_minimo=0)
+        self.inventario_repo.guardar(nuevo_inventario)
 
     def modificar_producto(self, producto : Producto) -> None:
         if producto.precio_venta <= 0: 

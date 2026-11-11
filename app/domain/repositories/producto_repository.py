@@ -16,7 +16,7 @@ class ProductoRepository(ABC):
         pass
 
     @abstractmethod
-    def guardar_producto(self, producto : Producto) -> None:
+    def guardar_producto(self, producto : Producto) -> Producto:
         pass
 
     @abstractmethod

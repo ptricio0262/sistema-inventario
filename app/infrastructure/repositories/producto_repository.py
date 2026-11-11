@@ -39,7 +39,7 @@ class ProductoRepositoryPostgres(ProductoRepository):
         )
         return p_db
 
-    def guardar_producto(self, producto : Producto) -> None:
+    def guardar_producto(self, producto : Producto) -> Producto: # Cambiamos -> None por -> Producto
         producto_nuevo = ProductoModel(
             codigo_barras=producto.codigo_barras,
             nombre=producto.nombre,
@@ -51,6 +51,9 @@ class ProductoRepositoryPostgres(ProductoRepository):
         )
         self.session.add(producto_nuevo)
         self.session.commit()
+        self.session.refresh(producto_nuevo)
+        producto.id_producto = producto_nuevo.id_producto
+        return producto
 
     def modificar_producto(self, producto : Producto) -> None:
         producto_db = self.session.query(ProductoModel).filter(ProductoModel.id_producto == producto.id_producto).first()

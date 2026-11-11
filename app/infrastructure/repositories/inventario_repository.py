@@ -17,14 +17,13 @@ class InventarioRepositoryPostgres(InventarioRepository):
             stock_minimo=modelo.stock_minimo
         )
 
-    def guardar(self, inventario : Inventario) -> Inventario:
-        if inventario.id_inventario:
-            modelo = self.session.query(InventarioModel).filter(InventarioModel.id_producto == inventario.id_producto).first()
-            if modelo:
-                modelo.cantidad = inventario.cantidad
-                modelo.stock_minimo = inventario.stock_minimo
-                self.session.commit()
-                return inventario
+    def guardar(self, inventario: Inventario) -> Inventario:
+        modelo = self.session.query(InventarioModel).filter(InventarioModel.id_producto == inventario.id_producto).first()
+        if modelo:
+            modelo.cantidad = inventario.cantidad
+            modelo.stock_minimo = inventario.stock_minimo
+            self.session.commit()
+            return inventario         
         nuevo_modelo = InventarioModel(
             id_producto=inventario.id_producto,
             cantidad=inventario.cantidad,
