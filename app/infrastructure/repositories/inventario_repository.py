@@ -12,24 +12,24 @@ class InventarioRepositoryPostgres(InventarioRepository):
         if not modelo:
             return None
         return Inventario(
-            id_inventario=modelo.id_inventario,
             id_producto=modelo.id_producto,
-            cantidad=modelo.cantidad
+            cantidad=modelo.cantidad,
+            stock_minimo=modelo.stock_minimo
         )
 
     def guardar(self, inventario : Inventario) -> Inventario:
         if inventario.id_inventario:
-            modelo = self.session.query(InventarioModel).filter(InventarioModel.id_inventario == inventario.id_inventario).first()
+            modelo = self.session.query(InventarioModel).filter(InventarioModel.id_producto == inventario.id_producto).first()
             if modelo:
                 modelo.cantidad = inventario.cantidad
+                modelo.stock_minimo = inventario.stock_minimo
                 self.session.commit()
                 return inventario
         nuevo_modelo = InventarioModel(
             id_producto=inventario.id_producto,
-            cantidad=inventario.cantidad
+            cantidad=inventario.cantidad,
+            stock_minimo=inventario.stock_minimo
         )
         self.session.add(nuevo_modelo)
         self.session.commit()
-        self.session.refresh(nuevo_modelo)
-        inventario.id_inventario = nuevo_modelo.id_inventario
         return inventario

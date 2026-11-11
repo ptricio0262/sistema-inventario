@@ -5,9 +5,9 @@ class InventarioMovimiento(BaseModel):
     cantidad : int
 
 class InventarioResponse(BaseModel):
-    id_inventario : int
     id_producto : int
     cantidad : int
+    stock_minimo : int
 
     class Config:
         from_attributes = True

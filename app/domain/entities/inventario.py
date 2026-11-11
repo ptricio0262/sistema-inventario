@@ -1,8 +1,8 @@
 class Inventario:
-    def __init__(self, id_producto : int, cantidad : int = 0, id_inventario : int | None = None):
-        self.id_inventario = id_inventario
+    def __init__(self, id_producto : int, cantidad : int = 0, stock_minimo : int | None = None):
         self.id_producto = id_producto
         self.cantidad = cantidad
+        self.stock_minimo = stock_minimo
 
     def agregar_stock(self, cantidad_a_sumar : int):
         if cantidad_a_sumar <= 0:
