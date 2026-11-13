@@ -1,15 +1,14 @@
 from fastapi import Depends
 from sqlalchemy.orm import Session
 from app.infrastructure.database import SessionLocal
-from fastapi import Depends
-from sqlalchemy.orm import Session
-from app.infrastructure.database import SessionLocal
 from app.infrastructure.repositories.producto_repository import ProductoRepositoryPostgres
 from app.application.services.producto_service import ProductoService
 from app.infrastructure.repositories.categoria_repository import CategoriaRepositoryPostgres
 from app.application.services.categoria_service import CategoriaService
 from app.infrastructure.repositories.inventario_repository import InventarioRepositoryPostgres
 from app.application.services.inventario_service import InventarioService
+from app.infrastructure.repositories.venta_repository import VentaRepositoryPostgres
+from app.application.services.venta_service import VentaService
 
 def get_db():
     db = SessionLocal()
@@ -21,7 +20,6 @@ def get_db():
 def get_producto_service(db_session : Session = Depends(get_db)) -> ProductoService:
     repositorio = ProductoRepositoryPostgres(session=db_session)
     inventario_repo = InventarioRepositoryPostgres(session=db_session) 
-    
     servicio = ProductoService(repositorio=repositorio, inventario_repo=inventario_repo)
     return servicio
 
@@ -33,3 +31,8 @@ def get_categoria_service(db_session : Session = Depends(get_db)) -> CategoriaSe
 def get_inventario_service(db_session : Session = Depends(get_db)) -> InventarioService:
     repositorio = InventarioRepositoryPostgres(session=db_session)
     return InventarioService(repositorio=repositorio)
+
+def get_venta_service(db_session : Session = Depends(get_db)) -> VentaService:
+    venta_repo = VentaRepositoryPostgres(session=db_session)
+    inventario_repo = InventarioRepositoryPostgres(session=db_session)
+    return VentaService(venta_repo=venta_repo, inventario_repo=inventario_repo)
